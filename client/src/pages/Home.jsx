@@ -1,60 +1,92 @@
 import React from "react";
-
+import qs from "qs";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setCategoryId,
+  setSortType,
+  setCurrentPage,
+  setFilters,
+} from "../redux/slices/filterSlice";
+import axios from "axios";
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock/PizzaBlock";
 import PizzaSkeleton from "../components/PizzaBlock/Skeleton";
+import Pagination from "../components/Pagination";
+import { SearchContext } from "../App";
 const Home = () => {
+  const navigate = useNavigate();
+  const categoryId = useSelector((state) => state.filter.category);
+  const sortType = useSelector((state) => state.filter.sortBy);
+  const currentPage = useSelector((state) => state.filter.page);
+  const dispatch = useDispatch();
+
+  const { searchValue } = React.useContext(SearchContext);
   const [items, setItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [categoryId, setCategoryId] = React.useState(0);
-  const [sortType, setSortType] = React.useState(0);
-  console.log(sortType);
-  const requestArrTypePizza = [
-    "/allpizza",
-    "/meatpizza",
-    "/veganpizza",
-    "/greelpizza",
-    "/spicypizza",
-    "/closedpizza",
-  ];
-  const requestSort = ["/rating", "/price", "/title"];
+
   React.useEffect(() => {
     setIsLoading(true);
-    const apiUrl = `${requestArrTypePizza[categoryId]}?sortBy=${requestSort[sortType]}&order=desc`;
-    fetch(apiUrl)
-      // fetch(requestArrTypePizza[categoryId])
-      // fetch(
-      //   `?${
-      //     categoryId > 0 ? `category=${requestArrTypePizza[categoryId]}` : ""
-      //   }&sortBy=${requestSort[sortType]} &order=desc`
-      // )
-      .then((res) => res.json())
-      .then((arr) => {
-        setItems(arr);
+
+    axios
+      .get("http://localhost:4444/categorysort", {
+        params: {
+          category: categoryId,
+          sortBy: sortType,
+          page: currentPage,
+        },
+      })
+      .then((response) => {
+        setItems(response.data);
         setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Ошибка при получении данных:", error);
       });
     window.scrollTo(0, 0);
-    //when home first time render, then make fast scroll in top
-  }, [categoryId, sortType]);
+  }, [categoryId, currentPage, sortType]);
   // categoryId here, so,useEffect, have to follow
   // for this state,if this state will chanched, then we fire request(useEffect).
   // console.log(categoryId, sortType);
+  // items.map((obj, index) => <PizzaBlock key={index} {...obj} />
+  React.useEffect(() => {
+    const queryString = qs.stringify({
+      categoryId,
+      sortType,
+      currentPage,
+    });
+
+    navigate(`?${queryString}`);
+    console.log(queryString);
+  }, [categoryId, currentPage, sortType]);
+
+  const pizzas = items
+    .filter((obj) => {
+      if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
+        return true;
+      }
+      return false;
+    })
+    .map((obj, index) => <PizzaBlock key={index} {...obj} />);
+  const skeletons = [...new Array(10)].map((_, index) => (
+    <PizzaSkeleton key={index} />
+  ));
   return (
     <div className="container">
       <div className="content__top">
         <Categories
           value={categoryId}
-          onClickCategory={(id) => setCategoryId(id)}
+          onClickCategory={(id) => dispatch(setCategoryId(id))}
         />
-        <Sort sortValue={sortType} onClickSort={(id) => setSortType(id)} />
+        <Sort
+          sortValue={sortType}
+          onClickSort={(id) => dispatch(setSortType(id))}
+        />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">
-        {isLoading
-          ? [...new Array(10)].map((_, index) => <PizzaSkeleton key={index} />)
-          : items.map((obj, index) => <PizzaBlock key={index} {...obj} />)}
-      </div>
+      <div className="content__items">{isLoading ? skeletons : pizzas}</div>
+      <Pagination onChangePage={(number) => dispatch(setCurrentPage(number))} />
     </div>
   );
 };

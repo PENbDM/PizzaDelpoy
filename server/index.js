@@ -15,6 +15,7 @@ mongoose
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.get("/allpizza", PizzaController.getAll);
 app.post("/createpizza", PizzaController.create);
@@ -29,8 +30,10 @@ app.get("/closedpizza", PizzaController.getPizzaClosed);
 app.get("/sortprice", PizzaController.getSortPrice);
 app.get("/sortraiting", PizzaController.getSortRaiting);
 app.get("/sorttitle", PizzaController.getSortTitle);
-
 //sort by price,popular,alphabet
+//sort by CATEGORY/SORT NEW
+app.get("/categorysort", PizzaController.getCategorySort);
+//sort by CATEGORY/SORT NEW
 
 app.listen(4444, (err) => {
   if (err) {

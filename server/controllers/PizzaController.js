@@ -116,3 +116,33 @@ export const getSortTitle = async (req, res) => {
   }
 };
 //sort by price,popular,alphabet
+export const getCategorySort = async (req, res) => {
+  const { category, sortBy, page } = req.query;
+  const itemsPerPage = 4;
+  const skip = (page - 1) * itemsPerPage;
+
+  let query;
+
+  if (category === "0") {
+    // Если "category" равно '0', получаем все пиццы без фильтрации по категории
+    query = Pizza.find({});
+  } else {
+    // Иначе, фильтруем по указанной категории
+    query = Pizza.find({ category });
+  }
+
+  if (sortBy === "0") {
+    query = query.sort({ rating: -1 });
+  } else if (sortBy === "1") {
+    query = query.sort({ price: -1 });
+  } else if (sortBy === "2") {
+    query = query.sort({ title: 1 });
+  }
+
+  try {
+    const pizzas = await query.skip(skip).limit(itemsPerPage).exec();
+    res.json(pizzas);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
