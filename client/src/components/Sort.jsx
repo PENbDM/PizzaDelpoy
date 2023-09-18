@@ -1,15 +1,28 @@
 import React from "react";
 function Sort({ sortValue, onClickSort }) {
   const [open, setOpen] = React.useState(false);
-  const list = ["популярности", "цене", "алфавиту"];
+  const list = ["popular", "price", "alphabet"];
   const sortName = list[sortValue];
+  const sortRef = React.useRef();
   // console.log(list[sortValue]);
   const onClickSelectItem = (index) => {
     onClickSort(index);
     setOpen(false);
   };
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sortRef.current && !sortRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    // if user making click outside of sort div, then this menu gonna close
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"

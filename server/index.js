@@ -1,8 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
-import Pizza from "./models/Pizza.js";
 import cors from "cors";
 import * as PizzaController from "./controllers/PizzaController.js";
+import * as CartController from "./controllers/CartController.js";
 mongoose
   .connect(
     "mongodb+srv://dimapen2002:12Dimabob122@cluster0.rnqnljn.mongodb.net/React-Pizza"
@@ -34,7 +34,9 @@ app.get("/sorttitle", PizzaController.getSortTitle);
 //sort by CATEGORY/SORT NEW
 app.get("/categorysort", PizzaController.getCategorySort);
 //sort by CATEGORY/SORT NEW
-
+//cart
+app.post("/addPizza", CartController.addCart);
+//cart
 app.listen(4444, (err) => {
   if (err) {
     return console.log(err);

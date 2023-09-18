@@ -6,7 +6,6 @@ import {
   setCategoryId,
   setSortType,
   setCurrentPage,
-  setFilters,
 } from "../redux/slices/filterSlice";
 import axios from "axios";
 import Categories from "../components/Categories";
@@ -50,6 +49,7 @@ const Home = () => {
   // for this state,if this state will chanched, then we fire request(useEffect).
   // console.log(categoryId, sortType);
   // items.map((obj, index) => <PizzaBlock key={index} {...obj} />
+
   React.useEffect(() => {
     const queryString = qs.stringify({
       categoryId,
