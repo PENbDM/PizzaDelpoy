@@ -9,6 +9,17 @@ export const getAll = async (req, res) => {
     });
   }
 };
+export const getOnePizza = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const pizza = await Pizza.findOne({ id: id }).exec();
+    res.json(pizza);
+  } catch (err) {
+    res.status(500).json({
+      message: "Could not get pizzas",
+    });
+  }
+};
 export const create = async (req, res) => {
   try {
     const doc = new Pizza({

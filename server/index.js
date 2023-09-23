@@ -18,6 +18,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/allpizza", PizzaController.getAll);
+app.get("/getpizza/:id", PizzaController.getOnePizza);
 app.post("/createpizza", PizzaController.create);
 //sort by category
 app.get("/meatpizza", PizzaController.getPizzaMeat);

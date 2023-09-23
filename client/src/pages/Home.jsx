@@ -1,13 +1,14 @@
 import React from "react";
 import qs from "qs";
-import { useNavigate } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setCategoryId,
   setSortType,
   setCurrentPage,
 } from "../redux/slices/filterSlice";
-import axios from "axios";
+import { fetchPizzas } from "../redux/slices/pizzaSlice";
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock/PizzaBlock";
@@ -19,30 +20,24 @@ const Home = () => {
   const categoryId = useSelector((state) => state.filter.category);
   const sortType = useSelector((state) => state.filter.sortBy);
   const currentPage = useSelector((state) => state.filter.page);
+  const { items, status } = useSelector((state) => state.pizza);
   const dispatch = useDispatch();
 
   const { searchValue } = React.useContext(SearchContext);
-  const [items, setItems] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    setIsLoading(true);
+    try {
+      dispatch(
+        fetchPizzas({
+          categoryId,
+          sortType,
+          currentPage,
+        })
+      );
+    } catch (error) {
+      console.error("Ошибка при получении пицц:", error);
+    }
 
-    axios
-      .get("http://localhost:4444/categorysort", {
-        params: {
-          category: categoryId,
-          sortBy: sortType,
-          page: currentPage,
-        },
-      })
-      .then((response) => {
-        setItems(response.data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Ошибка при получении данных:", error);
-      });
     window.scrollTo(0, 0);
   }, [categoryId, currentPage, sortType]);
   // categoryId here, so,useEffect, have to follow
@@ -58,7 +53,6 @@ const Home = () => {
     });
 
     navigate(`?${queryString}`);
-    console.log(queryString);
   }, [categoryId, currentPage, sortType]);
 
   const pizzas = items
@@ -68,7 +62,11 @@ const Home = () => {
       }
       return false;
     })
-    .map((obj, index) => <PizzaBlock key={index} {...obj} />);
+    .map((obj) => (
+      <Link key={obj.id} to={`/pizza/${obj.id}`}>
+        <PizzaBlock {...obj} />
+      </Link>
+    ));
   const skeletons = [...new Array(10)].map((_, index) => (
     <PizzaSkeleton key={index} />
   ));
@@ -85,7 +83,17 @@ const Home = () => {
         />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">{isLoading ? skeletons : pizzas}</div>
+      {status === "error" ? (
+        <div className="content__error">
+          <h2>Error 😕</h2>
+          <p>Coud not get pizzas...</p>
+        </div>
+      ) : (
+        <div className="content__items">
+          {status === "loading" ? skeletons : pizzas}
+        </div>
+      )}
+
       <Pagination onChangePage={(number) => dispatch(setCurrentPage(number))} />
     </div>
   );

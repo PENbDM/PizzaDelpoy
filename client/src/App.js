@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Cart from "./pages/Cart";
 import { Routes, Route } from "react-router-dom";
-
+import FullPizza from "./pages/FullPizza";
 export const SearchContext = React.createContext("");
 function App() {
   const [searchValue, setSearchValue] = React.useState("");
@@ -17,8 +17,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="*" element={<NotFound />} />
-
             <Route path="/cart" element={<Cart />} />
+            <Route path="/pizza/:id" element={<FullPizza />} />
           </Routes>
         </div>
       </SearchContext.Provider>
