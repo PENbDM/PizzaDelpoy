@@ -14,16 +14,14 @@ import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock/PizzaBlock";
 import PizzaSkeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination";
-import { SearchContext } from "../App";
 const Home = () => {
   const navigate = useNavigate();
   const categoryId = useSelector((state) => state.filter.category);
   const sortType = useSelector((state) => state.filter.sortBy);
   const currentPage = useSelector((state) => state.filter.page);
   const { items, status } = useSelector((state) => state.pizza);
+  const searchVa = useSelector((state) => state.search.searchVa);
   const dispatch = useDispatch();
-
-  const { searchValue } = React.useContext(SearchContext);
 
   React.useEffect(() => {
     try {
@@ -54,10 +52,9 @@ const Home = () => {
 
     navigate(`?${queryString}`);
   }, [categoryId, currentPage, sortType]);
-
   const pizzas = items
     .filter((obj) => {
-      if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
+      if (obj.title.toLowerCase().includes(searchVa.toLowerCase())) {
         return true;
       }
       return false;

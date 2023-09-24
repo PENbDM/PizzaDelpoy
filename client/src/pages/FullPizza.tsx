@@ -2,7 +2,11 @@ import axios from "axios";
 import React from "react";
 import { useParams } from "react-router-dom";
 export const FullPizza = () => {
-  const [pizza, setPizza] = React.useState([]);
+  const [pizza, setPizza] = React.useState<{
+    imageUrl: string;
+    title: string;
+    price: number;
+  }>();
   const { id } = useParams();
 
   React.useEffect(() => {
@@ -18,11 +22,13 @@ export const FullPizza = () => {
     }
     fetchPizza();
   }, []);
-
   if (!pizza) {
-    return "Loading...";
+    return (
+      <div className="container">
+        <h2>"Loading.." </h2>
+      </div>
+    );
   }
-
   return (
     <div className="container">
       <img src={pizza.imageUrl}></img>
