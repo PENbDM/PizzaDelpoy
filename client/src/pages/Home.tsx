@@ -14,18 +14,19 @@ import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock/PizzaBlock";
 import PizzaSkeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination";
-const Home = () => {
+const Home: React.FC = () => {
   const navigate = useNavigate();
-  const categoryId = useSelector((state) => state.filter.category);
-  const sortType = useSelector((state) => state.filter.sortBy);
-  const currentPage = useSelector((state) => state.filter.page);
-  const { items, status } = useSelector((state) => state.pizza);
-  const searchVa = useSelector((state) => state.search.searchVa);
+  const categoryId = useSelector((state: any) => state.filter.category);
+  const sortType = useSelector((state: any) => state.filter.sortBy);
+  const currentPage = useSelector((state: any) => state.filter.page);
+  const { items, status } = useSelector((state: any) => state.pizza);
+  const searchVa = useSelector((state: any) => state.search.searchVa);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
     try {
       dispatch(
+        // @ts-ignore
         fetchPizzas({
           categoryId,
           sortType,

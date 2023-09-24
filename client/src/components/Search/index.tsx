@@ -2,14 +2,13 @@ import React from "react";
 import styles from "./Search.module.scss";
 import search from "./search.svg";
 import close from "./close.svg";
-import { SearchContext } from "../../App";
 import debounce from "lodash.debounce";
 import { setSearchVa } from "../../redux/slices/searchSlice";
 import { useDispatch } from "react-redux";
 const Search = () => {
   const [value, setValue] = React.useState("");
   const dispatch = useDispatch();
-  const inputRef = React.useRef();
+  const inputRef = React.useRef<HTMLInputElement>(null);
   const onClickClear = () => {
     dispatch(setSearchVa(""));
     setValue("");

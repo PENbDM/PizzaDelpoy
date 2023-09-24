@@ -1,4 +1,5 @@
 import React from "react";
+
 function Sort({ sortValue, onClickSort }) {
   const [open, setOpen] = React.useState(false);
   const list = ["popular", "price", "alphabet"];
