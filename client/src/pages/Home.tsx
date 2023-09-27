@@ -53,6 +53,7 @@ const Home: React.FC = () => {
 
     navigate(`?${queryString}`);
   }, [categoryId, currentPage, sortType]);
+
   const pizzas = items
     .filter((obj) => {
       if (obj.title.toLowerCase().includes(searchVa.toLowerCase())) {

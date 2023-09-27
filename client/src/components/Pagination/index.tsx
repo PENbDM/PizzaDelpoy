@@ -3,8 +3,9 @@ import ReactPaginate from "react-paginate";
 import styles from "./Pagination.module.scss";
 
 type PaginationProps = {
-  onChangePage: any;
+  onChangePage: (page: number) => void;
 };
+
 const Pagination: React.FC<PaginationProps> = ({ onChangePage }) => {
   return (
     <ReactPaginate

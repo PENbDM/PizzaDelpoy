@@ -15,7 +15,9 @@ const Search = () => {
     inputRef.current.focus();
   };
 
-  const onChangeInput = (event) => {
+  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //if we point cursor to the onChange in our input html, we can see React.ChangeEventHandler
+    // we dont need this with Handler, just ChangeEvent, like this we typing our event inside function
     setValue(event.target.value);
     updateSearchValue(event.target.value);
   };
