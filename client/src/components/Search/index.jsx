@@ -5,19 +5,19 @@ import close from "./close.svg";
 import debounce from "lodash.debounce";
 import { setSearchVa } from "../../redux/slices/searchSlice";
 import { useDispatch } from "react-redux";
+
 const Search = () => {
   const [value, setValue] = React.useState("");
   const dispatch = useDispatch();
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef(null); // Use useRef to create a function ref
+
   const onClickClear = () => {
     dispatch(setSearchVa(""));
     setValue("");
     inputRef.current.focus();
   };
 
-  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //if we point cursor to the onChange in our input html, we can see React.ChangeEventHandler
-    // we dont need this with Handler, just ChangeEvent, like this we typing our event inside function
+  const onChangeInput = (event) => {
     setValue(event.target.value);
     updateSearchValue(event.target.value);
   };
@@ -50,4 +50,5 @@ const Search = () => {
     </div>
   );
 };
+
 export default Search;

@@ -1,13 +1,14 @@
 import axios from "axios";
 import React from "react";
 import { useSelector } from "react-redux";
+
 export const FullPizza = () => {
-  const [pizza, setPizza] = React.useState<{
-    imageUrl: string;
-    title: string;
-    price: number;
-  }>();
-  const _id = useSelector((state: any) => state.pizza._id);
+  const [pizza, setPizza] = React.useState({
+    imageUrl: "",
+    title: "",
+    price: 0,
+  });
+  const _id = useSelector((state) => state.pizza._id);
 
   React.useEffect(() => {
     async function fetchPizza() {
@@ -21,17 +22,19 @@ export const FullPizza = () => {
       }
     }
     fetchPizza();
-  }, []);
+  }, [_id]);
+
   if (!pizza) {
     return (
       <div className="container">
-        <h2>"Loading.." </h2>
+        <h2>Loading...</h2>
       </div>
     );
   }
+
   return (
     <div className="containerOnePizza">
-      <img width={300} height={300} src={pizza.imageUrl}></img>
+      <img width={300} height={300} src={pizza.imageUrl} alt={pizza.title} />
       <h2>{pizza.title}</h2>
       <h4>Price: {pizza.price} $</h4>
     </div>

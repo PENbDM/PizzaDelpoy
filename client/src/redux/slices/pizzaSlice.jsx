@@ -17,7 +17,7 @@ export const fetchPizzas = createAsyncThunk(
 );
 const initialState = {
   items: [],
-  _id: "",
+  _id: localStorage.getItem("pizzaId") || "", // Load from localStorage
   status: "loading",
 };
 
@@ -30,6 +30,8 @@ const pizzaSlice = createSlice({
     },
     setId(state, action) {
       state._id = action.payload;
+      // Save to localStorage whenever _id changes
+      localStorage.setItem("pizzaId", action.payload);
     },
   },
   extraReducers: {

@@ -4,24 +4,9 @@ import { addItem } from "../../redux/slices/cartSlice";
 import { useNavigate } from "react-router-dom";
 import { setId } from "../../redux/slices/pizzaSlice";
 
-type PizzaBlockProps = {
-  _id: string;
-  title: string;
-  price: number;
-  imageUrl: string;
-  sizes: number[];
-  types: number[];
-};
-const PizzaBlock: React.FC<PizzaBlockProps> = ({
-  _id,
-  title,
-  price,
-  imageUrl,
-  sizes,
-  types,
-}) => {
+const PizzaBlock = ({ _id, title, price, imageUrl, sizes, types }) => {
   const dispatch = useDispatch();
-  const cartItem = useSelector((state: any) =>
+  const cartItem = useSelector((state) =>
     state.cart.items.find((obj) => obj._id === _id)
   );
   const [activeType, setActiveType] = React.useState(0);

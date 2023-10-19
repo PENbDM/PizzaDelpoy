@@ -14,4 +14,3 @@ export const store = configureStore({
     auth,
   },
 });
-export type RootState = ReturnType<typeof store.getState>;

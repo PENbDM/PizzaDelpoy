@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-export const CartEmpty: React.FC = () => {
+export const CartEmpty = () => {
   return (
     <>
       <div className="cart cart--empty">

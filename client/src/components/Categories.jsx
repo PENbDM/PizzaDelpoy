@@ -1,9 +1,4 @@
-type CategoriesProps = {
-  value: number;
-  onClickCategory: (i: number) => void;
-  //description for function. typing here
-};
-const Categories: React.FC<CategoriesProps> = ({ value, onClickCategory }) => {
+const Categories = ({ value, onClickCategory }) => {
   // console.log(value);
 
   const categories = ["All", "Meat", "Vegetarian", "Grill", "Spicy", "Closed"];
