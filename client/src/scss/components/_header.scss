@@ -1,5 +1,22 @@
 @import "../variables";
-
+.header__cart {
+  display: flex;
+}
+@media (max-width: 970px) {
+  .header__logo p {
+    display: none;
+  }
+}
+@media (max-width: 856px) {
+  .header {
+    .container {
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+}
 .header {
   border-bottom: 1px solid $gray-line;
   padding: 40px 0;

@@ -1,6 +1,6 @@
 import Pizza from "../models/Pizza.js";
 import Cart from "../models/Cart.js";
-
+import Order from "../models/Order.js";
 export const addCart = async (req, res) => {
   try {
     const pizzas = req.body; // Массив объектов пицц
@@ -53,6 +53,44 @@ export const addCart = async (req, res) => {
     console.error(err);
     res.status(500).json({
       message: "Could not add pizza(s) to cart",
+    });
+  }
+};
+
+export const makeOrder = async (req, res) => {
+  // const { quantity, price, pizza, user, size, types, imageUrl, title } =
+  //   req.body;
+  const { pizzas, user, totalPrice } = req.body;
+  console.log(req.body);
+
+  try {
+    const doc = new Order({
+      pizzas: pizzas,
+      user: user,
+      totalPrice: totalPrice,
+    });
+    const order = await doc.save();
+    res.json(order);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: "Could not create pizza",
+    });
+  }
+};
+export const getOrder = async (req, res) => {
+  const { _id } = req.query;
+  try {
+    const userOrder = await Order.find({ user: _id });
+    if (userOrder) {
+      res.json(userOrder);
+    } else {
+      res.status(404).json({ message: "User order not found" });
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: "Could not get order",
+      error: err.message, // Добавьте сообщение об ошибке для отладки
     });
   }
 };

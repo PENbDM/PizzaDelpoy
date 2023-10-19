@@ -3,11 +3,13 @@ import mongoose from "mongoose";
 import cors from "cors";
 import * as PizzaController from "./controllers/PizzaController.js";
 import * as CartController from "./controllers/CartController.js";
+import * as UserController from "./controllers/UserController.js";
+import { loginValidation, registerValidation } from "./validations.js";
+import handleValidationErrors from "./utils/handleValidationErrors.js";
+import "dotenv/config";
 mongoose
-  .connect(
-    "mongodb+srv://dimapen2002:12Dimabob122@cluster0.rnqnljn.mongodb.net/React-Pizza"
-  )
-  // mongodb+srv://dimapen2002:12Dimabob122@cluster0.rnqnljn.mongodb.net/MERN-Blog
+  .connect(process.env.MONGODB_URI)
+  // "mongodb+srv://dimapen2002:12Dimabob122@cluster0.rnqnljn.mongodb.net/React-Pizza"
   .then(() => {
     console.log("DB OK");
   })
@@ -38,7 +40,27 @@ app.get("/categorysort", PizzaController.getCategorySort);
 //cart
 app.post("/addPizza", CartController.addCart);
 //cart
-app.listen(4444, (err) => {
+
+//USER//
+app.post(
+  "/register",
+  registerValidation,
+  handleValidationErrors,
+  UserController.register
+);
+app.post(
+  "/login",
+  loginValidation,
+  handleValidationErrors,
+  UserController.login
+);
+app.get("/user", UserController.getMe);
+//ORDER//
+app.post("/order", CartController.makeOrder);
+app.get("/getorder", CartController.getOrder);
+//ORDER//
+const PORT = process.env.PORT || 4444;
+app.listen(PORT, (err) => {
   if (err) {
     return console.log(err);
   }

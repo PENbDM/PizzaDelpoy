@@ -2,37 +2,37 @@ import { useDispatch } from "react-redux";
 import { addItem, minusItem, removeItem } from "../redux/slices/cartSlice";
 
 type CartItemProps = {
-  id: string;
+  _id: string;
   title: string;
-  type: string;
+  types: string;
   sizes: number;
   price: number;
-  count: number;
+  quantity: number;
   imageUrl: string;
 };
 const CartItem: React.FC<CartItemProps> = ({
-  id,
+  _id,
   title,
-  type,
+  types,
   sizes,
   price,
-  count,
+  quantity,
   imageUrl,
 }) => {
   const dispatch = useDispatch();
   const onClickPlus = () => {
     dispatch(
       addItem({
-        id,
+        _id,
       })
     );
   };
   const onClickMinus = () => {
-    dispatch(minusItem(id));
+    dispatch(minusItem(_id));
   };
   const onRemoveItem = () => {
     if (window.confirm("Are you sure you want to remove this item?")) {
-      dispatch(removeItem(id));
+      dispatch(removeItem(_id));
     }
   };
   return (
@@ -43,7 +43,7 @@ const CartItem: React.FC<CartItemProps> = ({
       <div className="cart__item-info">
         <h3>{title}</h3>
         <p>
-          {type}, {sizes} см.
+          {types}, {sizes} cm.
         </p>
       </div>
       <div className="cart__item-count">
@@ -68,7 +68,7 @@ const CartItem: React.FC<CartItemProps> = ({
             ></path>
           </svg>
         </div>
-        <b>{count}</b>
+        <b>{quantity}</b>
         <div
           onClick={onClickPlus}
           className="button button--outline button--circle cart__item-count-plus"
@@ -92,7 +92,7 @@ const CartItem: React.FC<CartItemProps> = ({
         </div>
       </div>
       <div className="cart__item-price">
-        <b>{price * count} ₽</b>
+        <b>{price * quantity} $</b>
       </div>
       <div className="cart__item-remove">
         <div

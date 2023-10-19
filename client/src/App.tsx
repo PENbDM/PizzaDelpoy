@@ -5,6 +5,8 @@ import NotFound from "./pages/NotFound";
 import Cart from "./pages/Cart";
 import { Routes, Route } from "react-router-dom";
 import FullPizza from "./pages/FullPizza";
+import Sign from "./components/Sign";
+import User from "./pages/User";
 function App() {
   return (
     <div className="wrapper">
@@ -14,7 +16,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/sign" element={<Sign />} />
           <Route path="/pizza/:id" element={<FullPizza />} />
+          <Route path="/user" element={<User />} />
         </Routes>
       </div>
     </div>

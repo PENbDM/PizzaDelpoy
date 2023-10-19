@@ -1,19 +1,19 @@
 import axios from "axios";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 export const FullPizza = () => {
   const [pizza, setPizza] = React.useState<{
     imageUrl: string;
     title: string;
     price: number;
   }>();
-  const { id } = useParams();
+  const _id = useSelector((state: any) => state.pizza._id);
 
   React.useEffect(() => {
     async function fetchPizza() {
       try {
         const { data } = await axios.get(
-          `http://localhost:4444/getpizza/${id}`
+          `http://localhost:4444/getpizza/${_id}`
         );
         setPizza(data);
       } catch (error) {
@@ -30,10 +30,10 @@ export const FullPizza = () => {
     );
   }
   return (
-    <div className="container">
-      <img src={pizza.imageUrl}></img>
+    <div className="containerOnePizza">
+      <img width={300} height={300} src={pizza.imageUrl}></img>
       <h2>{pizza.title}</h2>
-      <h4>{pizza.price}</h4>
+      <h4>Price: {pizza.price} $</h4>
     </div>
   );
 };

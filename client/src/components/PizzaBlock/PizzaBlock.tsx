@@ -1,8 +1,11 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../../redux/slices/cartSlice";
+import { useNavigate } from "react-router-dom";
+import { setId } from "../../redux/slices/pizzaSlice";
+
 type PizzaBlockProps = {
-  id: string;
+  _id: string;
   title: string;
   price: number;
   imageUrl: string;
@@ -10,7 +13,7 @@ type PizzaBlockProps = {
   types: number[];
 };
 const PizzaBlock: React.FC<PizzaBlockProps> = ({
-  id,
+  _id,
   title,
   price,
   imageUrl,
@@ -19,29 +22,38 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({
 }) => {
   const dispatch = useDispatch();
   const cartItem = useSelector((state: any) =>
-    state.cart.items.find((obj) => obj.id === id)
+    state.cart.items.find((obj) => obj._id === _id)
   );
   const [activeType, setActiveType] = React.useState(0);
   const [activeSize, setActiveSize] = React.useState(0);
 
   const addedCount = cartItem ? cartItem.count : 0;
-  console.log(sizes[activeSize]);
   const onClickAdd = () => {
     const item = {
-      id,
+      _id,
       title,
       price,
       imageUrl,
-      type: types[activeType],
+      types: types[activeType],
       sizes: sizes[activeSize],
     };
     dispatch(addItem(item));
   };
+  const navigate = useNavigate(); // Initialize the navigate function
 
+  const onClickImagPizza = async (_id) => {
+    await dispatch(setId(_id));
+    await navigate(`/pizza/${_id}`); // Use navigate to go to the specified URL
+  };
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
-        <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+        <img
+          onClick={() => onClickImagPizza(_id)}
+          className="pizza-block__image"
+          src={imageUrl}
+          alt="Pizza"
+        />
         <h4 className="pizza-block__title">{title}</h4>
         <div className="pizza-block__selector">
           <ul>
@@ -68,7 +80,8 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({
           </ul>
         </div>
         <div className="pizza-block__bottom">
-          <div className="pizza-block__price">от {price} ₽</div>
+          <div className="pizza-block__price">from {price} $</div>
+
           <button
             onClick={onClickAdd}
             className="button button--outline button--add"
@@ -85,7 +98,7 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({
                 fill="white"
               />
             </svg>
-            <span>Добавить</span>
+            <span>Add</span>
             {addedCount > 0 && <i>{addedCount}</i>}
           </button>
         </div>

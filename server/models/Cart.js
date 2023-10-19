@@ -8,6 +8,7 @@ const CartSchema = new mongoose.Schema({
         ref: "Pizza", // Это ссылка на схему Pizza
         required: true,
       },
+
       title: {
         type: String,
         required: true,

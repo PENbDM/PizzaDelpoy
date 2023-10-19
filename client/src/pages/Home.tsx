@@ -1,7 +1,7 @@
 import React from "react";
 import qs from "qs";
 
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setCategoryId,
@@ -61,11 +61,8 @@ const Home: React.FC = () => {
       }
       return false;
     })
-    .map((obj) => (
-      <Link key={obj.id} to={`/pizza/${obj.id}`}>
-        <PizzaBlock {...obj} />
-      </Link>
-    ));
+    .map((obj) => <PizzaBlock {...obj} />);
+
   const skeletons = [...new Array(10)].map((_, index) => (
     <PizzaSkeleton key={index} />
   ));
@@ -81,7 +78,7 @@ const Home: React.FC = () => {
           onClickSort={(id) => dispatch(setSortType(id))}
         />
       </div>
-      <h2 className="content__title">Все пиццы</h2>
+      <h2 className="content__title">All pizzas</h2>
       {status === "error" ? (
         <div className="content__error">
           <h2>Error 😕</h2>

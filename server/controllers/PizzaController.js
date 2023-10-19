@@ -12,7 +12,7 @@ export const getAll = async (req, res) => {
 export const getOnePizza = async (req, res) => {
   try {
     const id = req.params.id;
-    const pizza = await Pizza.findOne({ id: id }).exec();
+    const pizza = await Pizza.findOne({ _id: id }).exec();
     res.json(pizza);
   } catch (err) {
     res.status(500).json({

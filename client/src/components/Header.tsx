@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import Search from "./Search";
 function Header() {
   const { items, totalPrice } = useSelector((state: any) => state.cart);
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+  const totalCount = items.reduce((sum, item) => sum + item.quantity, 0);
   return (
     <div className="header">
       <div className="container">
@@ -13,14 +13,17 @@ function Header() {
             <img width="38" src="img/pizza-logo.svg" alt="Pizza logo" />
             <div>
               <h1>React Pizza</h1>
-              <p>самая вкусная пицца во вселенной</p>
+              <p>the most delicious pizza in the universe</p>
             </div>
           </div>
         </Link>
         <Search />
         <div className="header__cart">
+          <Link to="/sign" className="button2">
+            <img width={18} height={18} src="img/user.png" />
+          </Link>
           <Link to="/cart" className="button button--cart">
-            <span>{totalPrice} ₽</span>
+            <span>{totalPrice} $</span>
             <div className="button__delimiter"></div>
             <svg
               width="18"
@@ -36,6 +39,7 @@ function Header() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
+
               <path
                 d="M14.3333 16.3333C15.0697 16.3333 15.6667 15.7364 15.6667 15C15.6667 14.2636 15.0697 13.6667 14.3333 13.6667C13.597 13.6667 13 14.2636 13 15C13 15.7364 13.597 16.3333 14.3333 16.3333Z"
                 stroke="white"
